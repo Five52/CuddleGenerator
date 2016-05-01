@@ -1,0 +1,16 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Accueil - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Liste des câlins</h2>
+    <ul>
+        {% for cuddle in cuddles %}
+            <li>"{{ cuddle.content }}", par {{ cuddle.author }} le {{ cuddle.date | date('d/m/Y') }}</li>
+        {% else %}
+            <li>Pas encore de câlins !</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

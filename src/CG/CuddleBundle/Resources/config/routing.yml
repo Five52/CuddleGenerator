@@ -1,0 +1,30 @@
+cg_cuddle_home:
+    path: /
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:index
+
+cg_cuddle_view:
+    path: /{id}
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:view
+    requirements:
+        id: \d*
+
+cg_cuddle_add:
+    path: /add
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:add
+
+cg_cuddle_edit:
+    path: /{id}/edit
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:edit
+    requirements:
+        id: \d*
+
+cg_cuddle_delete:
+    path: /{id}/delete
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:delete
+    requirements:
+        id: \d*

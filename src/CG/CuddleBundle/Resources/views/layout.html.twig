@@ -1,0 +1,15 @@
+{% extends '::layout.html.twig' %}
+
+{% block title %}
+    Câlins - {{ parent() }}
+{% endblock %}
+
+{% block main %}
+    <h1>Câlins</h1>
+    <hr />
+    {% for message in app.session.flashbag.get('notice') %}
+        <p>{{ message }}</p>
+        <hr />
+    {% endfor %}
+    {% block cgcuddle_main %}{% endblock %}
+{% endblock %}

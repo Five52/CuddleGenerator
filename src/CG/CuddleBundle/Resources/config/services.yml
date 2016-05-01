@@ -1,0 +1,4 @@
+services:
+#    cg_cuddle.example:
+#        class: CG\CuddleBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

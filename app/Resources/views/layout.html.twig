@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Générateur de Câlins{% endblock %}</title>
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <h1>Générateur de câlins</h1>
+    </header>
+    <main>
+        {% block main %}{% endblock %}    
+    </main>
+    <nav>
+        {% block nav %}{% endblock %}
+    </nav>
+    <footer>
+        <p>&copy; {{ 'now' | date('Y') }} Cuddle Generator. Tous droits réservés</p>
+    </footer>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>
