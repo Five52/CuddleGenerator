@@ -1,24 +1,59 @@
+{# app/Resources/views/layout.html.twig #}
+{# Premier niveau #}
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Générateur de Câlins{% endblock %}</title>
     {% block stylesheets %}
+        {# <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> #}
+        {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> #}
+
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/font-awesome.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/style.min.css') }}" />
     {% endblock %}
 </head>
 <body>
     <header>
         <h1>Générateur de câlins</h1>
+        <p>Tout le monde a besoin d'amour !</p>
+        <div id="user_panel">
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                Bonjour {{ app.user.username }}
+                -
+                <a href="{{ path('fos_user_security_logout') }}">
+                    <i class="fa fa-sign-out"></i>
+                    Déconnexion
+                </a>
+            {% else %}
+                <i class="fa fa-sign-in"></i>
+                <a href="{{ path('fos_user_registration_register') }}">
+                    Inscription
+                </a>
+                -
+                <a href="{{ path('fos_user_security_login') }}">
+                    Connexion
+                </a>
+            {% endif %}
+        </div>
     </header>
-    <main>
-        {% block main %}{% endblock %}    
-    </main>
-    <nav>
-        {% block nav %}{% endblock %}
-    </nav>
+    <div id="wrapper">
+        <main>
+            {% block main %}{% endblock %}    
+        </main>
+        <nav id="main_nav">
+            {% block nav %}{% endblock %}
+        </nav>
+    </div>
     <footer>
         <p>&copy; {{ 'now' | date('Y') }} Cuddle Generator. Tous droits réservés</p>
     </footer>
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        {# <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script> #}
+        <script src="{{ asset('bundles/app/js/jquery-2.2.3.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/js/navigation.js') }}"></script>
+    {% endblock %}
 </body>
 </html>

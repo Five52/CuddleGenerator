@@ -1,0 +1,11 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Modifier un câlin - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Modifier un câlin</h2>
+
+    {% include 'CGCuddleBundle:Cuddle:form.html.twig' %}
+{% endblock %}

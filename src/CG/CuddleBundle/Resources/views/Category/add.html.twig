@@ -1,0 +1,11 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Ajouter une catégorie - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Ajouter une catégorie</h2>
+
+    {% include 'CGCuddleBundle:Category:form.html.twig' %}
+{% endblock %}

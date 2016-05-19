@@ -1,0 +1,14 @@
+{# src/CG/CuddleBundle/Resources/views/Cuddle/add.html.twig #}
+{# Troisième niveau #}
+
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Ecrire un câlin - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Ecrire un câlin</h2>
+
+    {% include 'CGCuddleBundle:Cuddle:form.html.twig' %}
+{% endblock %}

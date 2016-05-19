@@ -1,3 +1,6 @@
+{# src/CG/CuddleBundle/Resources/views/layout.html.twig #}
+{# Deuxième niveau #}
+
 {% extends '::layout.html.twig' %}
 
 {% block title %}
@@ -5,11 +8,32 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Câlins</h1>
-    <hr />
     {% for message in app.session.flashbag.get('notice') %}
-        <p>{{ message }}</p>
-        <hr />
+        <div class="notice_message">
+            {{ message }}
+        </div>
     {% endfor %}
     {% block cgcuddle_main %}{% endblock %}
+{% endblock %}
+
+{% block nav %}
+    <h3>Menu</h3>
+    <ul>
+        <li><a href="{{ path('cg_cuddle_home') }}">Mes câlins reçus</a></li>
+        <li><a href="{{ path('cg_cuddle_mine') }}">Câlins écrits</a></li>
+        <li><a href="{{ path('cg_cuddle_add') }}">Ecrire un câlin</a></li>
+        <li><a href="{{ path('cg_cuddle_category_subscriptions') }}">Gérer ses abonnements</a></li>
+    </ul>
+    {% if is_granted('ROLE_MODERATOR') %}
+        <ul>
+            <li><a href="{{ path('cg_cuddle_manage') }}">Gérer les câlins</a></li>
+        </ul>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <ul>
+            <li><a href="{{ path('cg_cuddle_category_add') }}">Ajouter une catégorie</a></li>
+            <li><a href="{{ path('cg_cuddle_send') }}">Envoyer les câlins</a></li>
+        </ul>
+    {% endif %}
+    
 {% endblock %}

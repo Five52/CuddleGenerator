@@ -1,0 +1,4 @@
+services:
+#    cg_user.example:
+#        class: CG\UserBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

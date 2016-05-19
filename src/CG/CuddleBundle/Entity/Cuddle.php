@@ -3,12 +3,18 @@
 namespace CG\CuddleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Cuddle
  *
  * @ORM\Table(name="cuddle")
  * @ORM\Entity(repositoryClass="CG\CuddleBundle\Repository\CuddleRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields="content", message="Un câlin existe déjà avec ce message.")
  */
 class Cuddle
 {
@@ -24,7 +30,8 @@ class Cuddle
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=255)
+     * @ORM\Column(name="content", type="string", length=255, unique=true)
+     * @Assert\Length(min=10, minMessage="Le message doit faire au moins {{ limit }} caractères.")
      */
     private $content;
 
@@ -37,20 +44,94 @@ class Cuddle
 
     /**
      * @var string
-     * @ORM\Column(name="author", type="string", length=255)
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="CG\UserBundle\Entity\User")
      */
     private $author;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CG\CuddleBundle\Entity\Category", inversedBy="cuddles", cascade={"persist"})
+     * ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
+     * @var boolean
+     * @ORM\Column(name="validated", type="boolean")
+     */
+    private $validated;
+
+    /**
+     * @var string
+     * @Gedmo\Blameable(on="change", field={"validated"})
+     * @ORM\ManyToOne(targetEntity="CG\UserBundle\Entity\User")
+     */
+    private $validatedBy;
+
+    /**
+     * @var string
+     * @Gedmo\Blameable(on="change", field={"content", "category"})
+     * @ORM\ManyToOne(targetEntity="CG\UserBundle\Entity\User")
+     */
+    private $editedBy;
 
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->validated = false;
     }
 
+    /**
+     * @Assert\Callback
+     */
+    public function isContentValid(ExecutionContextInterface $context)
+    {
+        $filepath = realpath(__DIR__ . '/../Validation/dictionary.txt');
+        $forbiddenWords = file($filepath, FILE_IGNORE_NEW_LINES);
+        // $forbiddenWords = ['moche', 'stupide', 'hideux'];
+        if (preg_match_all(
+            '#' . implode('|', $forbiddenWords) . '#i',
+            $this->getContent(),
+            $matches
+        )) {
+            $offendingWords = '';
+            $first = true;
+            foreach($matches[0] as $match) {
+                if ($first) {
+                    $offendingWords .= (string) $match;
+                    $first = false;
+                } else {
+                    $offendingWords .= ', ' . (string) $match;
+                }
+            }
+            $context
+                ->buildViolation('Votre câlin contient des termes offensants : ' . $offendingWords)
+                ->atPath('content')
+                ->addViolation()
+            ;
+        }
+    }
+
+    /**
+     * @ORM\PostPersist
+     */
+    public function increaseUserNbCuddles()
+    {
+        $this->getAuthor()->increaseNbCuddles();
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function decreaseUserNbCuddles()
+    {
+        $this->getAuthor()->decreaseNbCuddles();
+    }
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -106,13 +187,37 @@ class Cuddle
     }
 
     /**
-     * Set author
+     * Set validated
      *
-     * @param string $author
+     * @param boolean $validated
      *
      * @return Cuddle
      */
-    public function setAuthor($author)
+    public function setValidated($validated)
+    {
+        $this->validated = $validated;
+
+        return $this;
+    }
+
+    /**
+     * Get validated
+     *
+     * @return boolean
+     */
+    public function getValidated()
+    {
+        return $this->validated;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \CG\UserBundle\Entity\User $author
+     *
+     * @return Cuddle
+     */
+    public function setAuthor(\CG\UserBundle\Entity\User $author = null)
     {
         $this->author = $author;
 
@@ -122,10 +227,82 @@ class Cuddle
     /**
      * Get author
      *
-     * @return string
+     * @return \CG\UserBundle\Entity\User
      */
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \CG\CuddleBundle\Entity\Category $category
+     *
+     * @return Cuddle
+     */
+    public function setCategory(\CG\CuddleBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \CG\CuddleBundle\Entity\Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set validatedBy
+     *
+     * @param \CG\UserBundle\Entity\User $validatedBy
+     *
+     * @return Cuddle
+     */
+    public function setValidatedBy(\CG\UserBundle\Entity\User $validatedBy = null)
+    {
+        $this->validatedBy = $validatedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get validatedBy
+     *
+     * @return \CG\UserBundle\Entity\User
+     */
+    public function getValidatedBy()
+    {
+        return $this->validatedBy;
+    }
+
+    /**
+     * Set editedBy
+     *
+     * @param \CG\UserBundle\Entity\User $editedBy
+     *
+     * @return Cuddle
+     */
+    public function setEditedBy(\CG\UserBundle\Entity\User $editedBy = null)
+    {
+        $this->editedBy = $editedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get editedBy
+     *
+     * @return \CG\UserBundle\Entity\User
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
     }
 }

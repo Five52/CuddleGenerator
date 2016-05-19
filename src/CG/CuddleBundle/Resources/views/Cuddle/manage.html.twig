@@ -1,0 +1,45 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Tous les câlins - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Gérer les câlins</h2>
+    <ul>
+        {% for cuddle in cuddles %}
+            {% if cuddle.author != app.user %}
+                <li>
+                    <strong>{{ cuddle.category.name }}</strong>
+                    : "{{ cuddle.content }}", proposé par <em>{{ cuddle.author }}</em> le {{ cuddle.date | date('d/m/Y \à H:i') }}
+                    <div class="cuddle_actions">
+                        {% if is_granted('edit', cuddle) %}
+                            -
+                            <a href="{{ path('cg_cuddle_edit', {'cuddle_id': cuddle.id}) }}">
+                                <i class="fa fa-pencil"></i>
+                                Modifier
+                            </a>
+                        {% endif %}
+                        {% if is_granted('validate', cuddle) %}
+                            -
+                            <a href="{{ path('cg_cuddle_validate', {'cuddle_id': cuddle.id}) }}">
+                                <i class="fa fa-check"></i>
+                                Valider
+                            </a>
+                        {% endif %}
+                        {% if is_granted('delete', cuddle) %}
+                            -
+                            <a href="{{ path('cg_cuddle_delete', {'cuddle_id': cuddle.id}) }}">
+                                <i class="fa fa-trash"></i>
+                                Supprimer
+                            </a>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endif %}
+        {% else %}
+            Il n'y a plus de câlins à gérer.
+        {% endfor %}
+    </ul>
+    
+{% endblock %}

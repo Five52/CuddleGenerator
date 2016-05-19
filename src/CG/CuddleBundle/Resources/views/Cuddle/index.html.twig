@@ -5,12 +5,17 @@
 {% endblock %}
 
 {% block cgcuddle_main %}
-    <h2>Liste des câlins</h2>
+    <h2>Mes câlins reçus</h2>
     <ul>
-        {% for cuddle in cuddles %}
-            <li>"{{ cuddle.content }}", par {{ cuddle.author }} le {{ cuddle.date | date('d/m/Y') }}</li>
+        {% for cuddleUser in cuddlesUsers %}
+            <li>
+                <strong>{{ cuddleUser.cuddle.category.name }}</strong>
+                : "{{ cuddleUser.cuddle.content }}", reçu le {{ cuddleUser.date | date('d/m/Y \à H:i') }}
+            </li>
         {% else %}
-            <li>Pas encore de câlins !</li>
+            Vous n'avez pas encore reçu de câlins !
+            <br /><a href="{{ path('cg_cuddle_category_subscriptions') }}">Inscrivez-vous à une catégorie</a> pour recevoir des câlins de celle-ci !
         {% endfor %}
     </ul>
+    
 {% endblock %}

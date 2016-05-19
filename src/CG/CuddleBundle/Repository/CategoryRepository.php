@@ -10,4 +10,15 @@ namespace CG\CuddleBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function get($id)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+            ->leftJoin('c.cuddles', 'cud')
+            ->addSelect('cud')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

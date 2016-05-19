@@ -1,0 +1,40 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Câlins écrits - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Câlins écrits</h2>
+    <section>
+        <h3>Câlins validés</h3>
+        <ul>
+            {% for cuddle in cuddles %}
+                {% if cuddle.validated %}
+                    <li>
+                        <strong>{{ cuddle.category.name }}</strong>
+                        : "{{ cuddle.content }}", proposé le {{ cuddle.date | date('d/m/Y') }}
+                    </li>
+                {% endif %}
+            {% else %}
+                Pas encore de câlins validés !
+            {% endfor %}
+        </ul>
+    </section>
+    <section>
+        <h3>Câlins en cours de validation</h3>
+        <ul>
+            {% for cuddle in cuddles %}
+                {% if not cuddle.validated %}
+                    <li>
+                        <strong>{{ cuddle.category.name }}</strong>
+                        : "{{ cuddle.content }}", proposé le {{ cuddle.date | date('d/m/Y') }}
+                    </li>
+                {% endif %}
+            {% else %}
+                Pas de câlins en cours de validation !
+            {% endfor %}
+        </ul> 
+    </section>
+    
+{% endblock %}

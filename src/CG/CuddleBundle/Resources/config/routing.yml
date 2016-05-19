@@ -3,12 +3,20 @@ cg_cuddle_home:
     defaults:
         _controller: CGCuddleBundle:Cuddle:index
 
-cg_cuddle_view:
-    path: /{id}
+cg_cuddle_test:
+    path: /test
     defaults:
-        _controller: CGCuddleBundle:Cuddle:view
-    requirements:
-        id: \d*
+        _controller: CGCuddleBundle:Cuddle:test
+
+cg_cuddle_mine:
+    path: /mine
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:mine
+
+cg_cuddle_manage:
+    path: /manage
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:manage
 
 cg_cuddle_add:
     path: /add
@@ -16,15 +24,57 @@ cg_cuddle_add:
         _controller: CGCuddleBundle:Cuddle:add
 
 cg_cuddle_edit:
-    path: /{id}/edit
+    path: /{cuddle_id}/edit
     defaults:
         _controller: CGCuddleBundle:Cuddle:edit
     requirements:
-        id: \d*
+        cuddle_id: \d*
+
+cg_cuddle_validate:
+    path: /{cuddle_id}/validate
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:validate
+    requirements:
+        cuddle_id: \d*
 
 cg_cuddle_delete:
-    path: /{id}/delete
+    path: /{cuddle_id}/delete
     defaults:
         _controller: CGCuddleBundle:Cuddle:delete
     requirements:
-        id: \d*
+        cuddle_id: \d*
+
+cg_cuddle_send:
+    path: /send-cuddles
+    defaults:
+        _controller: CGCuddleBundle:Cuddle:sendCuddles
+
+cg_cuddle_category_subscriptions:
+    path: /subscriptions
+    defaults:
+        _controller: CGCuddleBundle:Category:subscribe
+
+cg_cuddle_category_home:
+    path: /categories/
+    defaults:
+        _controller: CGCuddleBundle:Category:index
+
+cg_cuddle_category_add:
+    path: /categories/add
+    defaults:
+        _controller: CGCuddleBundle:Category:add
+
+cg_cuddle_category_view:
+    path: /categories/{category_slug}
+    defaults:
+        _controller: CGCuddleBundle:Category:view
+
+cg_cuddle_category_edit:
+    path: /categories/{category_slug}/edit
+    defaults:
+        _controller: CGCuddleBundle:Category:edit
+
+cg_cuddle_category_delete:
+    path: /categories/{category_slug}/delete
+    defaults:
+        _controller: CGCuddleBundle:Category:delete

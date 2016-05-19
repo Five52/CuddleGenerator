@@ -1,0 +1,36 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Voir une catégorie - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Catégorie {{ category.name }}</h2>
+    <p>
+        <a href="{{ path('cg_cuddle_category_home') }}">
+            <i class="fa fa-chevron-left"></i>
+            Retour à la liste des catégories
+        </a>
+        -
+        <a href="{{ path('cg_cuddle_category_edit', {'category_slug': category.slug}) }}">
+            <i class="fa fa-pencil"></i>
+            Modifier la catégorie
+        </a>
+        -
+        <a href="{{ path('cg_cuddle_category_delete', {'category_slug': category.slug}) }}">
+            <i class="fa fa-trash"></i>
+            Supprimer la catégorie
+        </a>
+    </p>
+    {% if category.cuddles|length > 0 %}
+        <ul>
+            {% for cuddle in category.cuddles %}
+                <li>
+                    <a href="{{ path('cg_cuddle_view', {'cuddle_id': cuddle.id}) }}">"{{ cuddle.content }}"</a>, par {{ cuddle.author }} le {{ cuddle.date | date('d/m/Y') }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Pas encore de câlins dans cette catégorie !</p>
+    {% endif %}
+{% endblock %}

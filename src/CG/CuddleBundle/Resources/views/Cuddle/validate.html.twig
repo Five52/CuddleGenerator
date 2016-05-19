@@ -1,0 +1,26 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Validation d'un câlin - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Validation d'un câlin</h2>
+
+    <p>
+        Etes-vous sûr de vouloir valider le câlin suivant ?
+        <br />"{{ cuddle.content }}", par {{ cuddle.author }} le {{ cuddle.date | date('d/m/Y \à H:i') }}
+    </p>
+
+    <form action="{{ path('cg_cuddle_validate', {'cuddle_id': cuddle.id}) }}" method="post">
+        <a href="{{ path('cg_cuddle_manage') }}">
+            <i class="fa fa-chevron-left"></i>
+            Retour à la liste des câlins
+        </a>
+        <button type="submit" class="btn btn-default">
+            <i class="fa fa-check"></i>
+            Valider
+        </button>
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}

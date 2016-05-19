@@ -1,0 +1,22 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Supprimer une catégorie - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Supprimer une catégorie</h2>
+
+    <p>
+        Etes-vous sûr de vouloir supprimer la catégorie {{ category.name }} ?
+    </p>
+    
+    <form action="{{ path('cg_cuddle_category_delete', {'category_slug': category.slug}) }}" method="post">
+        <a href="{{ path('cg_cuddle_category_view', {'category_slug': category.slug}) }}">
+            <i class="fa fa-chevron-left"></i>
+            Retour à la catégorie
+        </a>
+        <input type="submit" value="Supprimer" />
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}

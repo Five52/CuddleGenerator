@@ -2,6 +2,9 @@
 
 namespace CG\CuddleBundle\Repository;
 
+use CG\CuddleBundle\Entity\Category;
+use CG\UserBundle\Entity\User;
+
 /**
  * CuddleRepository
  *
@@ -10,4 +13,88 @@ namespace CG\CuddleBundle\Repository;
  */
 class CuddleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getAll()
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.category', 'cat')
+            ->addSelect('cat')
+            ->orderBy('c.date', 'desc')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getNotYetValidatedCuddles()
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.category', 'cat')
+            ->addSelect('cat')
+            ->where('c.validated = false')
+            ->orderBy('c.date', 'desc')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function get($id)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+            ->join('c.category', 'cat')
+            ->addSelect('cat')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function getUserCuddles(User $user)
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.category', 'cat')
+            ->addSelect('cat')
+            ->orderBy('c.date', 'desc')
+            ->where('c.author = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getCuddleForSubscriptionOfUser(User $user)
+    {
+        $receivedCuddles = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('c')
+            ->from('CGCuddleBundle\Entity\Cuddle', 'c')
+            ->leftJoin(
+                'CGCuddleBundle\Entity\CuddleUser',
+                'cu',
+                \Doctrine\ORM\Query\Expr\Join::WITH,
+                'cu.cuddle = c.id'
+            )
+            ->where('cu.user = :user')
+            ->setParameter('user', $user)
+        ;
+
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.validated = true')
+            ->where('c.author != :user')
+            ->setParameter('user', $user)
+            ->andWhere('c.category = :userSubscription')
+            ->setParameter('userSubscription', $user->getSubscriptions()->first())
+            ->andWhere('c not in (:received)')
+            ->setParameter('received', $receivedCuddles);
+        
+        // return $qb->getQuery()->getResult();
+        $cuddles = $qb->getQuery()->getResult();
+
+        $nbCuddles = count($cuddles);
+        if ($nbCuddles === 0) {
+            return null;
+        }
+
+        return $cuddles[mt_rand(0, $nbCuddles - 1)];
+    }
 }

@@ -1,0 +1,10 @@
+Bonjour {{ user.username }},
+Vous avez reçu des nouveaux câlins !
+{% for cuddle in cuddles %}
+    - {{ cuddle.category.name }} : "{{ cuddle.content }}"
+{% endfor %}
+
+Vous pouvez consulter tous les câlins que vous avez reçus dans votre espace personnel : {{ url('cg_cuddle_home') }}
+
+Passez une bonne journée !
+L'équipe CuddleGenerator

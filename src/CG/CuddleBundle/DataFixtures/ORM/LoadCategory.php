@@ -4,9 +4,10 @@ namespace CG\CuddleBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use CG\CuddleBundle\Entity\Category;
 
-class LoadCuddle implements FixtureInterface
+class LoadCategory implements FixtureInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -22,5 +23,10 @@ class LoadCuddle implements FixtureInterface
             $manager->persist($category);
         }
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 2;
     }
 }

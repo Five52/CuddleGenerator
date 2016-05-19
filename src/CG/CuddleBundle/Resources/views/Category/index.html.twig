@@ -1,0 +1,18 @@
+{% extends 'CGCuddleBundle::layout.html.twig' %}
+
+{% block title %}
+    Liste des catégories - {{ parent() }}
+{% endblock %}
+
+{% block cgcuddle_main %}
+    <h2>Liste des catégories</h2>
+    <ul>
+        {% for category in categories %}
+            <li>
+                <a href="{{ path('cg_cuddle_category_view', {'category_slug': category.slug}) }}">
+                    {{ category.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
