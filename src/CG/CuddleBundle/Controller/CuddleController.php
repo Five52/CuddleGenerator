@@ -168,13 +168,13 @@ class CuddleController extends Controller
     public function sendCuddlesAction(Request $request)
     {
         if ($this->isGranted('ROLE_ADMIN')) {
-            // $this->sendCuddles()
+            $this->sendCuddles();
             $request->getSession()->getFlashBag()->add('notice', 'Câlins bien envoyés !');
             return $this->render('CGCuddleBundle:Cuddle:send.html.twig');
         }
         
         if ($request->query->get('token') === self::SEND_CUDDLES_KEY) {
-            // $this->sendCuddles();
+            $this->sendCuddles();
             return new Response("ok");
         }
 

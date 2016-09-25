@@ -27,6 +27,6 @@ class LoadCategory implements FixtureInterface, OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 2;
+        return 1;
     }
 }

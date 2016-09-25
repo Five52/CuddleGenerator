@@ -21,7 +21,8 @@ class LoadCuddle implements FixtureInterface, ContainerAwareInterface, OrderedFi
     public function load(ObjectManager $manager)
     {
         $data = [
-            ['Ta cuisine est excellente', 'user', 'Cuisine', false],
+            ['ta cuisin et excélente', 'user', 'Cuisine', false],
+            ['tes vraiment pas beau', 'user', 'Intelligence', false],
             ['Tu danses de mieux en mieux', 'user', 'Charisme', false],
             ["J'adore les gâteaux que tu fais", 'user', 'Cuisine', false],
             ['Passer une journée avec toi est un bonheur', 'user', 'Charisme', true],

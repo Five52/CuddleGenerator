@@ -6,4 +6,7 @@
 
 {% block cgcuddle_main %}
     <h2>Envoi de câlins</h2>
+    <code>
+        0 7 * * 1 wget -O - -q -t 1 http://localhost:8080/cuddle-generator/web/app_dev.php/cuddles/send-cuddles?token=62ebe69ed032abaa7bc434664bf9e045c0f844f0bdeef84e3cb8020174fe640f
+    </code>
 {% endblock %}

@@ -24,21 +24,21 @@ cg_cuddle_add:
         _controller: CGCuddleBundle:Cuddle:add
 
 cg_cuddle_edit:
-    path: /{cuddle_id}/edit
+    path: /edit/{cuddle_id}
     defaults:
         _controller: CGCuddleBundle:Cuddle:edit
     requirements:
         cuddle_id: \d*
 
 cg_cuddle_validate:
-    path: /{cuddle_id}/validate
+    path: /validate/{cuddle_id}
     defaults:
         _controller: CGCuddleBundle:Cuddle:validate
     requirements:
         cuddle_id: \d*
 
 cg_cuddle_delete:
-    path: /{cuddle_id}/delete
+    path: /delete/{cuddle_id}
     defaults:
         _controller: CGCuddleBundle:Cuddle:delete
     requirements:
@@ -70,11 +70,11 @@ cg_cuddle_category_view:
         _controller: CGCuddleBundle:Category:view
 
 cg_cuddle_category_edit:
-    path: /categories/{category_slug}/edit
+    path: /categories/edit/{category_slug}
     defaults:
         _controller: CGCuddleBundle:Category:edit
 
 cg_cuddle_category_delete:
-    path: /categories/{category_slug}/delete
+    path: /categories/delete/{category_slug}
     defaults:
         _controller: CGCuddleBundle:Category:delete
